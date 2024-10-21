@@ -122,7 +122,7 @@ const LoginRegister = ({ location }) => {
           localStorage.setItem("role", decodedToken.role);
           localStorage.setItem("storeID", decodedToken.storeID);
 
-          if (decodedToken.role === "ROLE_SELLER") {
+          if (decodedToken.role === "ROLE_ACCOUNT") {
             // Lưu trữ thông tin seller
             dispatch(fetchSellerInfo(decodedToken.storeID))
               .then((storeData) => {
@@ -131,7 +131,7 @@ const LoginRegister = ({ location }) => {
               .catch((error) => {
                 console.error("Lỗi fetching store data:", error);
               });
-            history.push("/banhang/dashboard");
+            history.push("/quanly/dashboard");
           } else {
             history.push("/home-fashion");
           }

@@ -116,7 +116,7 @@ const ProductList = () => {
             title: 'Mô tả',
             key: 'description',
             dataIndex: 'description',
-            width: 800, 
+            width: 800,
             render: description => (
                 <span>
                     {description.length > 200 ? description.slice(0, 500) + '...' : description}
@@ -167,7 +167,7 @@ const ProductList = () => {
                         <Option key={category} value={category}>{category}</Option>
                     ))}
                 </Select>
-                <NavLink to="/banhang/add-product">
+                <NavLink to="/quanly/add-product">
                     <Button type="primary" style={{ background: '#F56285', borderColor: '#F56285' }} icon={<PlusOutlined />}>
                         Thêm 1 sản phẩm mới
                     </Button>
@@ -204,7 +204,7 @@ const ProductList = () => {
                         dataSource={filteredProducts}
                         rowKey="productID"
                         locale={customLocale}
-                        pagination={{ pageSize: 10 }} 
+                        pagination={{ pageSize: 10 }}
                     />
                 </TabPane>
             </Tabs>

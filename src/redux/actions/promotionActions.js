@@ -13,7 +13,7 @@ export const SET_PROMOTION_ERROR = "SET_PROMOTION_ERROR";
 export const getAllPromotions = () => {
     return async (dispatch) => {
         try {
-            const response = await axios.get('https://bloomgift-e5hva0bgc6aubaen.eastus-01.azurewebsites.net/api/seller/promotions/promotion-management/get-all', {
+            const response = await axios.get('https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/seller/promotions/promotion-management/get-all', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }
@@ -37,7 +37,7 @@ export const getAllPromotions = () => {
 export const getPromotionByStatus = (promotionStatus) => {
     return async (dispatch) => {
         try {
-            const response = await axios.get(`https://bloomgift-e5hva0bgc6aubaen.eastus-01.azurewebsites.net/api/seller/promotions/promotion-management/get-by-promotion-status/${promotionStatus}`, {
+            const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/seller/promotions/promotion-management/get-by-promotion-status/${promotionStatus}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }
@@ -72,7 +72,7 @@ export const getPromotionByStatus = (promotionStatus) => {
 export const getPromotionById = (promotionID) => {
     return async (dispatch) => {
         try {
-            const response = await axios.get(`https://bloomgift-e5hva0bgc6aubaen.eastus-01.azurewebsites.net/api/seller/promotions/promotion-management/get-by-promotionID/${promotionID}`, {
+            const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/seller/promotions/promotion-management/get-by-promotionID/${promotionID}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }
@@ -95,7 +95,7 @@ export const getPromotionById = (promotionID) => {
 export const createPromotion = (storeID, promotionInfo) => {
     return async (dispatch) => {
         try {
-            const response = await axios.post(`https://bloomgift-e5hva0bgc6aubaen.eastus-01.azurewebsites.net/api/seller/promotions/promotion-management/create?storeID=${storeID}`, promotionInfo, {
+            const response = await axios.post(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/seller/promotions/promotion-management/create?storeID=${storeID}`, promotionInfo, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }
@@ -118,7 +118,7 @@ export const updatePromotion = (promotionID, promotionInfo) => {
     return async (dispatch) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.put(`https://bloomgift-e5hva0bgc6aubaen.eastus-01.azurewebsites.net/api/seller/promotions/promotion-management/update/${promotionID}`, promotionInfo, {
+            const response = await axios.put(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/seller/promotions/promotion-management/update/${promotionID}`, promotionInfo, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-type': 'application/json'
@@ -143,7 +143,7 @@ export const updatePromotion = (promotionID, promotionInfo) => {
 export const deletePromotion = (promotionID) => {
     return async (dispatch) => {
         try {
-            const response = await axios.delete(`https://bloomgift-e5hva0bgc6aubaen.eastus-01.azurewebsites.net/api/seller/promotions/promotion-management/delete/${promotionID}`, {
+            const response = await axios.delete(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/seller/promotions/promotion-management/delete/${promotionID}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }

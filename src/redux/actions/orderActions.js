@@ -3,6 +3,7 @@ import axios from 'axios';
 export const GET_ALL_ORDERS = 'GET_ALL_ORDERS';
 export const GET_ORDER_BY_ID = 'GET_ORDER_BY_ID';
 export const GET_ORDER_BY_STATUS = 'GET_ORDER_BY_STATUS';
+export const GET_ORDER_COUNT_REVENUE = 'GET_ORDER_COUNT_REVENUE';
 
 
 export const fetchAllOrders = () => {
@@ -12,7 +13,7 @@ export const fetchAllOrders = () => {
             if (!token) {
                 throw new Error("No token found");
             }
-            const response = await axios.get('https://bloomgift-e5hva0bgc6aubaen.eastus-01.azurewebsites.net/api/seller/order/order-management/get-all-order', {
+            const response = await axios.get('https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/seller/order/order-management/get-all-order', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -40,7 +41,7 @@ export const fetchOrderById = (orderID) => {
             if (!token) {
                 throw new Error("No token found");
             }
-            const response = await axios.get(`https://bloomgift-e5hva0bgc6aubaen.eastus-01.azurewebsites.net/api/seller/order/order-management/get-order-by-id/${orderID}`, {
+            const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/seller/order/order-management/get-order-by-id/${orderID}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -68,7 +69,7 @@ export const fetchOrderByStatus = (orderStatus) => {
             if (!token) {
                 throw new Error("No token found");
             }
-            const response = await axios.get(`https://bloomgift-e5hva0bgc6aubaen.eastus-01.azurewebsites.net/api/seller/order/order-management/get-order-by-status/${orderStatus}`, {
+            const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/seller/order/order-management/get-order-by-status/${orderStatus}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -88,3 +89,24 @@ export const fetchOrderByStatus = (orderStatus) => {
         }
     }
 }
+
+export const fetchOrderCountRevenue = async () => {
+    try {
+        const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/revenue/revenue-management/total-revenue`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            }
+        );
+
+        if (response.status !== 200) {
+            throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("Fetch account count failed:", error);
+        return Promise.reject(error);
+    }
+};

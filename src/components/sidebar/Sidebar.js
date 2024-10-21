@@ -44,34 +44,34 @@ const SalerSidebar = ({ children }) => {
                         {collapsed ? '≡' : 'BloomGift'}
                     </Button>
                     <Menu iconShape="circle" menuItemStyles={menuItemStyles} >
-                        <MenuItem style={{ paddingLeft: "0px" }} icon={<House />} component={<NavLink to="/banhang/dashboard" />}>
+                        <MenuItem style={{ paddingLeft: "0px" }} icon={<House />} component={<NavLink to="/quanly/dashboard" />}>
                             Thống Kê
                         </MenuItem>
-                        <MenuItem style={{ paddingLeft: "0px" }} icon={<Gem />} component={<NavLink to="/banhang/shop-management" />}>
+                        <MenuItem style={{ paddingLeft: "0px" }} icon={<Gem />} component={<NavLink to="/quanly/shop-management" />}>
                             Shop Management
                         </MenuItem>
-                        <MenuItem style={{ paddingLeft: "0px" }} icon={<Heart />} component={<NavLink to="/banhang/all-promotion" />}>
+                        <MenuItem style={{ paddingLeft: "0px" }} icon={<Heart />} component={<NavLink to="/quanly/all-promotion" />}>
                             Quản Lý Khuyến Mãi
                         </MenuItem>
-                        <MenuItem style={{ paddingLeft: "0px" }} icon={<Box />} component={<NavLink to="/banhang/order-management" />}>
+                        <MenuItem style={{ paddingLeft: "0px" }} icon={<Box />} component={<NavLink to="/quanly/order-management" />}>
                             Order Management
                         </MenuItem>
-                        <MenuItem style={{ paddingLeft: "0px" }} icon={<BarChart />} component={<NavLink to="/banhang/reports" />}>
-                            Reports
+                        <MenuItem style={{ paddingLeft: "0px" }} icon={<BarChart />} component={<NavLink to="/quanly/giao-dich" />}>
+                            Quản lý Giao Dịch
                         </MenuItem>
                         <SubMenu label="Quản Lý Sản Phẩm " style={{ paddingLeft: "0px" }} icon={<BoxSeam />}>
-                            <MenuItem style={{ paddingLeft: "15px" }} icon={<Box />} component={<NavLink to="/banhang/all-products" />}>
+                            <MenuItem style={{ paddingLeft: "15px" }} icon={<Box />} component={<NavLink to="/quanly/all-products" />}>
                                 Tất Cả Sản Phẩm
                             </MenuItem>
-                            <MenuItem style={{ paddingLeft: "15px" }} icon={<PlusCircle />} component={<NavLink to="/banhang/add-product" />}>
+                            <MenuItem style={{ paddingLeft: "15px" }} icon={<PlusCircle />} component={<NavLink to="/quanly/add-product" />}>
                                 Thêm Sản Phẩm
                             </MenuItem>
                         </SubMenu>
                         <SubMenu label="Quản Lý Cửa Hàng " style={{ paddingLeft: "0px" }} icon={<BoxSeam />}>
-                            <MenuItem style={{ paddingLeft: "15px" }} icon={<Box />} component={<NavLink to="/banhang/shop-profile" />}>
+                            <MenuItem style={{ paddingLeft: "15px" }} icon={<Box />} component={<NavLink to="/quanly/shop-profile" />}>
                                 Hồ Sơ Shop
                             </MenuItem>
-                            <MenuItem style={{ paddingLeft: "15px" }} icon={<PlusCircle />} component={<NavLink to="/banhang/shop-settings" />}>
+                            <MenuItem style={{ paddingLeft: "15px" }} icon={<PlusCircle />} component={<NavLink to="/quanly/shop-settings" />}>
                                 Thiết Lập Shop
                             </MenuItem>
                         </SubMenu>

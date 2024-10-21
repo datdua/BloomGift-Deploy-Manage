@@ -1,18 +1,23 @@
 import axios from "axios";
 
-export const SELLER_INFO = "SELLER_INFO";
-export const UPDATE_SELLER_INFO = "UPDATE_SELLER_INFO";
+export const ACCOUNT_INFO = "ACCOUNT_INFO";
+export const UPDATE_ACCOUNT_INFO = "UPDATE_ACCOUNT_INFO";
 export const GET_ALL_PRODUCTS = "GET_ALL_PRODUCTS";
+export const GET_COUNT_STORES_BY_STATUS_ACTIVE = "GET_COUNT_STORES_BY_STATUS_ACTIVE";
+export const GET_COUNT_ACCOUNT = "GET_COUNT_ACCOUNT";
+export const GET_ALL_STORES = "GET_ALL_STORES";
+export const ACCEPT_STORE = "ACCEPT_STORE";
+export const REJECT_STORE = "REJECT_STORE";
 
-export const fetchSellerInfo = (sellerId) => {
+export const fetchSellerInfo = (accountID) => {
     return async (dispatch) => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
                 throw new Error("No token found");
             }
-            const response = await axios.get('https://bloomgift-e5hva0bgc6aubaen.eastus-01.azurewebsites.net/api/seller/store/store-management/get-by-id', {
-                params: { storeID: sellerId },
+            const response = await axios.get('https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/accounts-management', {
+                params: { accountID: accountID },
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -20,29 +25,29 @@ export const fetchSellerInfo = (sellerId) => {
             if (response.status !== 200) {
                 throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
             }
-            const storeData = response.data;
+            const accountData = response.data;
             dispatch({
-                type: SELLER_INFO,
+                type: ACCOUNT_INFO,
                 payload: {
-                    storeID: storeData.storeID,
-                    storeName: storeData.storeName,
-                    type: storeData.type.trim(),
-                    storePhone: storeData.storePhone,
-                    storeAddress: storeData.storeAddress,
-                    email: storeData.email,
-                    bankAccountName: storeData.bankAccountName,
-                    bankNumber: storeData.bankNumber,
-                    bankAddress: storeData.bankAddress,
-                    taxNumber: storeData.taxNumber,
-                    storeStatus: storeData.storeStatus,
-                    storeAvatar: storeData.storeAvatar,
-                    identityCard: storeData.identityCard.trim(),
-                    identityName: storeData.identityName,
-                    roleName: storeData.roleName,
-                    storeDescription: storeData.storeDescription
+                    accountID: accountData.accountID,
+                    accountName: accountData.accountName,
+                    type: accountData.type.trim(),
+                    accountPhone: accountData.accountPhone,
+                    accountAddress: accountData.accountAddress,
+                    email: accountData.email,
+                    bankAccountName: accountData.bankAccountName,
+                    bankNumber: accountData.bankNumber,
+                    bankAddress: accountData.bankAddress,
+                    taxNumber: accountData.taxNumber,
+                    accountStatus: accountData.accountStatus,
+                    accountAvatar: accountData.accountAvatar,
+                    identityCard: accountData.identityCard.trim(),
+                    identityName: accountData.identityName,
+                    roleName: accountData.roleName,
+                    accountDescription: accountData.accountDescription
                 }
             });
-            return storeData;
+            return accountData;
         } catch (error) {
             console.error("Fetch seller info failed:", error);
             return Promise.reject(error);
@@ -50,7 +55,7 @@ export const fetchSellerInfo = (sellerId) => {
     }
 }
 
-export const updateSellerInfo = (sellerId, editedInfo, storeAvatar) => {
+export const updateSellerInfo = (accountID, editedInfo, accountAvatar) => {
     return async (dispatch) => {
         try {
             const token = localStorage.getItem('token');
@@ -59,10 +64,10 @@ export const updateSellerInfo = (sellerId, editedInfo, storeAvatar) => {
             }
 
             const sellerInfoForBackend = {
-                storeName: editedInfo.storeName,
+                accountName: editedInfo.accountName,
                 type: editedInfo.type,
-                storePhone: editedInfo.storePhone,
-                storeAddress: editedInfo.storeAddress,
+                accountPhone: editedInfo.accountPhone,
+                accountAddress: editedInfo.accountAddress,
                 email: editedInfo.email,
                 bankAccountName: editedInfo.bankAccountName,
                 bankNumber: editedInfo.bankNumber,
@@ -70,21 +75,21 @@ export const updateSellerInfo = (sellerId, editedInfo, storeAvatar) => {
                 taxNumber: editedInfo.taxNumber,
                 identityCard: editedInfo.identityCard,
                 identityName: editedInfo.identityName,
-                storeStatus: editedInfo.storeStatus,
-                storeDescription: editedInfo.storeDescription,
+                accountStatus: editedInfo.accountStatus,
+                accountDescription: editedInfo.accountDescription,
                 password: editedInfo.password
             };
 
             // Prepare FormData for multipart request
             const formData = new FormData();
-            formData.append("storePutRequest", JSON.stringify(sellerInfoForBackend));
-            if (storeAvatar) {
-                formData.append("storeAvatar", storeAvatar); // Attach file if exists
+            formData.append("accountPutRequest", JSON.stringify(sellerInfoForBackend));
+            if (accountAvatar) {
+                formData.append("accountAvatar", accountAvatar); // Attach file if exists
             }
 
             // Send the request with multipart data
             const response = await axios.put(
-                `https://bloomgift-e5hva0bgc6aubaen.eastus-01.azurewebsites.net/api/seller/store/store-management/update/${sellerId}`,
+                `https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/accounts-management/update/${accountID}`,
                 formData,
                 {
                     headers: {
@@ -95,19 +100,223 @@ export const updateSellerInfo = (sellerId, editedInfo, storeAvatar) => {
             );
 
             if (response.status !== 200) {
-                throw new Error(`Error updating store info: ${response.status}`);
+                throw new Error(`Error updating account info: ${response.status}`);
             }
 
-            const updatedStoreData = response.data;
+            const updatedaccountData = response.data;
             dispatch({
-                type: UPDATE_SELLER_INFO,
-                payload: updatedStoreData,
+                type: UPDATE_ACCOUNT_INFO,
+                payload: updatedaccountData,
             });
-            return updatedStoreData;
+            return updatedaccountData;
         } catch (error) {
-            console.error("Update store info failed:", error);
+            console.error("Update account info failed:", error);
             return Promise.reject(error);
         }
     };
 }
+
+export const rejectSeller = (storeID) => {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error("No token found");
+            }
+
+            const response = await axios.put(
+                `https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/accounts-management/reject/${storeID}`,
+                {},
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (response.status !== 200) {
+                throw new Error(`Error rejecting account: ${response.status}`);
+            }
+
+            const updatedaccountData = response.data;
+            dispatch({
+                type: UPDATE_ACCOUNT_INFO,
+                payload: updatedaccountData,
+            });
+            return updatedaccountData;
+        } catch (error) {
+            console.error("Reject account failed:", error);
+            return Promise.reject(error);
+        }
+    };
+}
+
+export const acceptSeller = (storeID) => {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error("No token found");
+            }
+
+            const response = await axios.put(
+                `https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/accounts-management/accept/${storeID}`,
+                {},
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (response.status !== 200) {
+                throw new Error(`Error accepting account: ${response.status}`);
+            }
+
+            const updatedaccountData = response.data;
+            dispatch({
+                type: UPDATE_ACCOUNT_INFO,
+                payload: updatedaccountData,
+            });
+            return updatedaccountData;
+        } catch (error) {
+            console.error("Accept account failed:", error);
+            return Promise.reject(error);
+        }
+    };
+}
+
+export const fetchCountStoresByStatus = async () => {
+    const storeStatus = "Đã kích hoạt";
+    try {
+        const encodedStatus = encodeURIComponent(storeStatus);
+        const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/role-management/seller-count?storeStatus=${encodedStatus}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            }
+        );
+
+        if (response.status !== 200) {
+            throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("Fetch store count failed:", error);
+        return Promise.reject(error);
+    }
+};
+
+export const fetchCountAccount = async () => {
+    try {
+        const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/role-management/customer-count`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            }
+        );
+
+        if (response.status !== 200) {
+            throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("Fetch account count failed:", error);
+        return Promise.reject(error);
+    }
+};
+
+export const fetchAllStores = () => {
+    return async (dispatch) => {
+        try {
+            const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/store-management/get-all`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (response.status !== 200) {
+                throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
+            }
+
+            dispatch({
+                type: GET_ALL_STORES,
+                payload: response.data,
+            });
+        } catch (error) {
+            console.error("Fetch all stores failed:", error);
+            return Promise.reject(error);
+        }
+    };
+};
+
+export const acceptStore = (storeID) => {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error("No token found");
+            }
+
+            const response = await axios.put(
+                `https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/store-management/accept-store/${storeID}`,
+                {},
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (response.status !== 200) {
+                throw new Error(`Error accepting store: ${response.status}`);
+            }
+
+            dispatch({
+                type: ACCEPT_STORE,
+                payload: response.data,
+            });
+        } catch (error) {
+            console.error("Accept store failed:", error);
+            return Promise.reject(error);
+        }
+    };
+};
+
+export const rejectStore = (storeID) => {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error("No token found");
+            }
+
+            const response = await axios.put(
+                `https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/store-management/reject-store/${storeID}`,
+                {},
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (response.status !== 200) {
+                throw new Error(`Error rejecting store: ${response.status}`);
+            }
+
+            dispatch({
+                type: REJECT_STORE,
+                payload: response.data,
+            });
+        } catch (error) {
+            console.error("Reject store failed:", error);
+            return Promise.reject(error);
+        }
+    };
+};
 

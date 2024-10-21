@@ -20,14 +20,25 @@ const PaymentList = () => {
     }, [dispatch]);
 
     const handleAcceptClick = (paymentID) => {
-        dispatch(acceptPayment(paymentID))
-            .then(() => {
-                Swal.fire('Thành công', 'Thanh toán đã được chấp nhận.', 'success');
-                dispatch(fetchAllPayment());
-            })
-            .catch(() => {
-                Swal.fire('Lỗi', 'Có lỗi xảy ra khi chấp nhận thanh toán.', 'error');
-            });
+        Swal.fire({
+            title: 'Bạn có chắc chắn?',
+            text: "Bạn sẽ không thể hoàn tác thao tác này!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(acceptPayment(paymentID))
+                    .then(() => {
+                        Swal.fire('Thành công', 'Thanh toán đã được chấp nhận.', 'success');
+                        dispatch(fetchAllPayment());
+                    })
+                    .catch(() => {
+                        Swal.fire('Lỗi', 'Có lỗi xảy ra khi chấp nhận thanh toán.', 'error');
+                    });
+            }
+        });
     };
 
     const handleRejectClick = (paymentID) => {

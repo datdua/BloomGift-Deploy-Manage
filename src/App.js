@@ -15,7 +15,9 @@ import ShopManagement from "./components/sidebar/ShopManagement";
 import StoreProfile from "./components/sidebar/ProductManager/StoreProfile";
 import ProductList from "./components/sidebar/ProductManager/ProductList";
 import PromotionList from "./components/sidebar/PromotionManager/PromotionList";
+import StoreList from "./components/sidebar/StoreManager/StoreList";
 import AddProduct from "./components/sidebar/ProductManager/AddProduct";
+import PaymentList from "./components/sidebar/PaymentManager/PaymentList";
 import LoginPage from "./pages/other/Login";
 import UpdateProduct from "./components/sidebar/ProductManager/UpdateProduct";
 
@@ -172,15 +174,16 @@ const App = (props) => {
                   path={publicUrl + "/not-found"}
                   component={NotFound}
                 />
-                <Route path="/banhang">
+                <Route path="/quanly">
                   <SalerSidebar>
                     <Switch>
-                      <Route path="/banhang/dashboard" component={Dashboard} />
-                      <Route path="/banhang/shop-management" component={ShopManagement} />
-                      <Route path="/banhang/shop-profile" component={StoreProfile} />
-                      <Route path="/banhang/all-products" component={ProductList} />
-                      <Route path="/banhang/add-product" component={AddProduct} />
-                      <Route path="/banhang/all-promotion" component={PromotionList} />
+                      <Route path="/quanly/dashboard" component={Dashboard} />
+                      <Route path="/quanly/shop-management" component={StoreList} />
+                      <Route path="/quanly/shop-profile" component={StoreProfile} />
+                      <Route path="/quanly/all-products" component={ProductList} />
+                      <Route path="/quanly/add-product" component={AddProduct} />
+                      <Route path="/quanly/all-promotion" component={PromotionList} />
+                      <Route path="/quanly/giao-dich" component={PaymentList} />
                     </Switch>
                   </SalerSidebar>
                 </Route>

@@ -1,29 +1,27 @@
-import { produce } from 'immer';
-import { SELLER_INFO, UPDATE_SELLER_INFO } from "../actions/storeActions";
+import { GET_ALL_STORES, ACCEPT_STORE, REJECT_STORE } from '../actions/storeActions';
 
 const initialState = {
-    sellerInfo: null,
-    isAuthenticated: false,
-    loading: false,
+    isAuthorized: false,
+    stores: [],
     error: null,
 };
 
 const storeReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SELLER_INFO:
+        case GET_ALL_STORES:
             return {
                 ...state,
-                sellerInfo: action.payload,
-                isAuthenticated: true,
-                loading: false,
+                stores: action.payload,  // Cập nhật danh sách các cửa hàng
                 error: null,
+                isAuthorized: true,
             };
-        case UPDATE_SELLER_INFO:
+        case ACCEPT_STORE:
+        case REJECT_STORE:
             return {
                 ...state,
-                sellerInfo: action.payload,
-                isAuthenticated: true,
-                loading: false,
+                stores: state.stores.map(store =>
+                    store._id === action.payload._id ? action.payload : store  // Dùng _id để xác định cửa hàng đúng
+                ),
                 error: null,
             };
         default:

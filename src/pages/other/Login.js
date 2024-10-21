@@ -49,16 +49,17 @@ const Login = () => {
                     localStorage.setItem("token", response.token);
                     localStorage.setItem("role", decodedToken.role);
                     localStorage.setItem("storeID", decodedToken.storeID);
+                    localStorage.setItem("accountID", decodedToken.accountID);
 
                     if (decodedToken.role === "ROLE_ADMIN") {
-                        dispatch(fetchSellerInfo(decodedToken.storeID))
+                        dispatch(fetchSellerInfo(decodedToken.accountID))
                             .then((storeData) => {
                                 console.log("Store data fetch thành công", storeData);
                             })
                             .catch((error) => {
                                 console.error("Lỗi fetching store data:", error);
                             });
-                        history.push("/banhang/shop-profile");
+                        history.push("/quanly/shop-profile");
                     }
                 }
             })

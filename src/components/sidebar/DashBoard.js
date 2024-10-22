@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Statistic, Typography, Space } from 'antd';
-import { ShopOutlined, UserOutlined, DollarCircleOutlined } from '@ant-design/icons';
+import { ShopOutlined, UserOutlined, DollarOutlined, ArrowUpOutlined  } from '@ant-design/icons';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { fetchCountStoresByStatus, fetchCountAccount } from '../../redux/actions/storeActions';
 import { fetchOrderCountRevenue } from '../../redux/actions/orderActions';
-import PaymentList from '../../components/sidebar/PaymentManager/PaymentList';
 
 const { Title } = Typography;
 
@@ -90,39 +89,51 @@ const Dashboard = () => {
     return (
         <Space direction="vertical" size="large" style={{ width: '100%', overflowX: "hidden", padding: "0 10px" }}>
             <Title level={2} style={{ color: '#333' }}>Dashboard</Title>
-            <Row gutter={[16, 16]}>
-                <Col xs={24} sm={12} md={8}>
-                    <Card style={cardStyle} hoverable>
+<Row gutter={[16, 16]}>
+                <Col xs={24} sm={8}>
+                    <Card style={cardStyle}>
                         <Statistic
                             title="Tổng số cửa hàng"
                             value={storeCount}
                             prefix={<ShopOutlined style={iconStyle} />}
-                            valueStyle={{ color: '#ff69b4'}}
+                            suffix={
+                                <span style={{ fontSize: '14px', color: '#52c41a' }}>
+                                    <ArrowUpOutlined /> 20%
+                                </span>
+                            }
                         />
                     </Card>
                 </Col>
-                <Col xs={24} sm={12} md={8}>
-                    <Card style={cardStyle} hoverable>
+                <Col xs={24} sm={8}>
+                    <Card style={cardStyle}>
                         <Statistic
                             title="Tổng số tài khoản"
                             value={accountCount}
                             prefix={<UserOutlined style={iconStyle} />}
-                            valueStyle={{ color: '#ff69b4' }}
+                            suffix={
+                                <span style={{ fontSize: '14px', color: '#52c41a' }}>
+                                    <ArrowUpOutlined /> 15%
+                                </span>
+                            }
                         />
                     </Card>
                 </Col>
-                <Col xs={24} sm={12} md={8}>
-                    <Card style={cardStyle} hoverable>
+                <Col xs={24} sm={8}>
+                    <Card style={cardStyle}>
                         <Statistic
                             title="Doanh thu đơn hàng"
                             value={orderCountRevenue}
-                            prefix={<DollarCircleOutlined style={iconStyle} />}
-                            valueStyle={{ color: '#ff69b4' }}
+                            prefix={<DollarOutlined style={iconStyle} />}
+                            suffix={
+                                <span style={{ fontSize: '14px', color: '#52c41a' }}>
+                                    <ArrowUpOutlined /> 25%
+                                </span>
+                            }
+                            precision={2}
                         />
                     </Card>
                 </Col>
             </Row>
-
             <Card style={chartCardStyle}>
                 <Title level={4}>Biểu đồ thống kê</Title>
                 <div style={{ width: '100%', height: 400 }}>
@@ -149,8 +160,6 @@ const Dashboard = () => {
                     </ResponsiveContainer>
                 </div>
             </Card>
-
-            <PaymentList />
         </Space>
     );
 };

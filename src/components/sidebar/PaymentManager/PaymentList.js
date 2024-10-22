@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Button, Input, Modal, Select, Empty } from 'antd';
+import { Table, Button, Input, Modal, Select, Empty, Row, Col } from 'antd';
 import { acceptPayment, fetchAllPayment, rejectPayment } from '../../../redux/actions/paymentAction';
 import { CheckOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
@@ -73,17 +73,34 @@ const PaymentList = () => {
             dataIndex: 'paymentID',
             key: 'paymentID',
             sorter: (a, b) => a.paymentID - b.paymentID,
+            align: 'center',
         },
         {
             title: 'Ngày thanh toán',
             dataIndex: 'paymentDate',
             key: 'paymentDate',
             sorter: (a, b) => new Date(a.paymentDate) - new Date(b.paymentDate),
+            align: 'center',
+        },
+        {
+            title: 'Cửa hàng',
+            dataIndex: 'storeName',
+            key: 'storeName',
+            sorter: (a, b) => a.storeName.localeCompare(b.storeName),
+            align: 'center',
+        },
+        {
+            title: 'Mã đơn hàng',
+            dataIndex: 'orderID',
+            key: 'orderID',
+            sorter: (a, b) => a.orderID - b.orderID,
+            align: 'center',
         },
         {
             title: 'Ngân hàng',
             dataIndex: 'bankName',
             key: 'bankName',
+            align: 'center',
         },
         {
             title: 'Tổng tiền',
@@ -91,24 +108,27 @@ const PaymentList = () => {
             key: 'totalPrice',
             sorter: (a, b) => a.totalPrice - b.totalPrice,
             render: (price) => `${price.toLocaleString()} VNĐ`,
+            align: 'center',
         },
         {
             title: 'Trạng thái',
             dataIndex: 'paymentStatus',
             key: 'paymentStatus',
             render: (status) => (status ? 'Đã thanh toán' : 'Chưa thanh toán'),
+            align: 'center',
         },
         {
             title: 'Mã giao dịch',
             dataIndex: 'paymentCode',
             key: 'paymentCode',
             render: (code) => code ? code : 'Chưa có mã giao dịch',
+            align: 'center',
         },
         {
-            title: 'Thao tác',
+            title: 'Thao tác duyệt',
             key: 'action',
             render: (_, record) => (
-                <div style={{ display: 'flex', gap: '10px' }}>
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
                     <Button type="primary" style={{ background: '#52c41a' }} onClick={() => handleAcceptClick(record.paymentID)} icon={<CheckOutlined />}>
                         Chấp nhận
                     </Button>
@@ -117,6 +137,7 @@ const PaymentList = () => {
                     </Button>
                 </div>
             ),
+            align: 'center',
         },
     ];
 
@@ -129,30 +150,38 @@ const PaymentList = () => {
     return (
         <div style={{ padding: '20px' }}>
             <h1>Danh sách thanh toán</h1>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-                <Input
-                    placeholder="Tìm kiếm theo mã giao dịch"
-                    prefix={<SearchOutlined />}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{ width: '300px' }}
-                />
-                <Select
-                    placeholder="Chọn ngân hàng"
-                    onChange={(value) => setSelectedBank(value)}
-                    style={{ width: '200px' }}
-                >
-                    <Option value="">Tất cả</Option>
-                    <Option value="MOMO">MOMO</Option>
-                    <Option value="TPBANK">TPBANK</Option>
-                </Select>
-            </div>
+            <Row gutter={[16, 16]} style={{ marginBottom: '20px' }}>
+                <Col xs={24} sm={12} md={8}>
+                    <Input
+                        placeholder="Tìm kiếm theo mã giao dịch"
+                        prefix={<SearchOutlined />}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{ width: '100%', borderColor: '#F56285' }}
+                    />
+                </Col>
+                <Col xs={24} sm={12} md={8}>
+                    <Select
+                        placeholder="Chọn ngân hàng"
+                        onChange={(value) => setSelectedBank(value)}
+                        style={{ width: '100%' }}
+                    >
+                        <Option value="">Tất cả</Option>
+                        <Option value="MOMO">MOMO</Option>
+                        <Option value="TPBANK">TPBANK</Option>
+                    </Select>
+                </Col>
+            </Row>
             <Table
                 columns={columns}
                 dataSource={filteredPayments}
                 rowKey="paymentID"
                 locale={{
+                    triggerDesc: 'Nhấn để sắp xếp giảm dần',
+                    triggerAsc: 'Nhấn để sắp xếp tăng dần',
+                    cancelSort: 'Nhấn để hủy sắp xếp',
                     emptyText: <Empty description="Không có thanh toán nào" />,
                 }}
+                pagination={{ pageSize: 10 }}
             />
             <Modal
                 title="Từ chối thanh toán"

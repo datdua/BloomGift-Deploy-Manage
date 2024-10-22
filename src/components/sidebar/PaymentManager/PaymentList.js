@@ -14,6 +14,7 @@ const PaymentList = () => {
     const [rejectModalVisible, setRejectModalVisible] = useState(false);
     const [selectedPaymentId, setSelectedPaymentId] = useState(null);
     const [rejectNote, setRejectNote] = useState('');
+    const [noteError, setNoteError] = useState('');
 
     useEffect(() => {
         dispatch(fetchAllPayment());
@@ -46,12 +47,31 @@ const PaymentList = () => {
         setRejectModalVisible(true);
     };
 
+    // const handleConfirmReject = () => {
+    //     dispatch(rejectPayment(selectedPaymentId, rejectNote))
+    //         .then(() => {
+    //             Swal.fire('Thành công', 'Thanh toán đã bị từ chối.', 'success');
+    //             setRejectModalVisible(false);
+    //             setRejectNote('');
+    //             dispatch(fetchAllPayment());
+    //         })
+    //         .catch(() => {
+    //             Swal.fire('Lỗi', 'Có lỗi xảy ra khi từ chối thanh toán.', 'error');
+    //         });
+    // };
+
     const handleConfirmReject = () => {
+        if (!rejectNote.trim()) {
+            setNoteError('Vui lòng nhập lý do từ chối thanh toán');
+            return;
+        }
+
         dispatch(rejectPayment(selectedPaymentId, rejectNote))
             .then(() => {
                 Swal.fire('Thành công', 'Thanh toán đã bị từ chối.', 'success');
                 setRejectModalVisible(false);
                 setRejectNote('');
+                setNoteError('');
                 dispatch(fetchAllPayment());
             })
             .catch(() => {
@@ -150,16 +170,32 @@ const PaymentList = () => {
                 title="Từ chối thanh toán"
                 visible={rejectModalVisible}
                 onOk={handleConfirmReject}
-                onCancel={() => setRejectModalVisible(false)}
+                onCancel={() => {
+                    setRejectModalVisible(false);
+                    setRejectNote('');
+                    setNoteError('');
+                }}
                 okText="Xác nhận"
                 cancelText="Hủy"
             >
-                <Input.TextArea
-                    value={rejectNote}
-                    onChange={(e) => setRejectNote(e.target.value)}
-                    placeholder="Nhập ghi chú lý do từ chối"
-                />
-            </Modal>
+                <div style={{ marginBottom: '16px' }}>
+                    <Input.TextArea
+                        value={rejectNote}
+                        onChange={(e) => {
+                            setRejectNote(e.target.value);
+                            setNoteError('');
+                        }}
+                        placeholder="Nhập ghi chú lý do từ chối"
+                        status={noteError ? 'error' : ''}
+                        style={{ marginBottom: '4px' }}
+                    />
+                    {noteError && (
+                        <div style={{ color: '#ff4d4f', fontSize: '14px' }}>
+                            {noteError}
+                        </div>
+                    )}
+                </div>
+            </Modal>l
         </div>
     );
 };

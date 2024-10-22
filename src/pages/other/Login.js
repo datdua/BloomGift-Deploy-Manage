@@ -59,7 +59,7 @@ const Login = () => {
                             .catch((error) => {
                                 console.error("Lỗi fetching store data:", error);
                             });
-                        history.push("/quanly/shop-profile");
+                        history.push("/quanly/dashboard");
                     }
                 }
             })

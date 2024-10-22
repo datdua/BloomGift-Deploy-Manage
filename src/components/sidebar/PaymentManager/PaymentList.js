@@ -15,6 +15,7 @@ const PaymentList = () => {
     const [selectedPaymentId, setSelectedPaymentId] = useState(null);
     const [rejectNote, setRejectNote] = useState('');
     const [noteError, setNoteError] = useState('');
+    const [selectedBank, setSelectedBank] = useState(''); // State to store selected bank
 
     useEffect(() => {
         dispatch(fetchAllPayment());
@@ -47,19 +48,6 @@ const PaymentList = () => {
         setRejectModalVisible(true);
     };
 
-    // const handleConfirmReject = () => {
-    //     dispatch(rejectPayment(selectedPaymentId, rejectNote))
-    //         .then(() => {
-    //             Swal.fire('Thành công', 'Thanh toán đã bị từ chối.', 'success');
-    //             setRejectModalVisible(false);
-    //             setRejectNote('');
-    //             dispatch(fetchAllPayment());
-    //         })
-    //         .catch(() => {
-    //             Swal.fire('Lỗi', 'Có lỗi xảy ra khi từ chối thanh toán.', 'error');
-    //         });
-    // };
-
     const handleConfirmReject = () => {
         if (!rejectNote.trim()) {
             setNoteError('Vui lòng nhập lý do từ chối thanh toán');
@@ -87,14 +75,10 @@ const PaymentList = () => {
             sorter: (a, b) => a.paymentID - b.paymentID,
         },
         {
-            title: 'ID Tài khoản',
-            dataIndex: 'accountID',
-            key: 'accountID',
-        },
-        {
-            title: 'Phương thức',
-            dataIndex: 'method',
-            key: 'method',
+            title: 'Ngày thanh toán',
+            dataIndex: 'paymentDate',
+            key: 'paymentDate',
+            sorter: (a, b) => new Date(a.paymentDate) - new Date(b.paymentDate),
         },
         {
             title: 'Ngân hàng',
@@ -121,12 +105,6 @@ const PaymentList = () => {
             render: (code) => code ? code : 'Chưa có mã giao dịch',
         },
         {
-            title: 'Ghi chú',
-            dataIndex: 'note',
-            key: 'note',
-            render: (note) => note ? note : 'Không có ghi chú',
-        },
-        {
             title: 'Thao tác',
             key: 'action',
             render: (_, record) => (
@@ -144,7 +122,8 @@ const PaymentList = () => {
 
     const filteredPayments = payments.filter(
         (payment) =>
-            payment.paymentCode?.toLowerCase().includes(searchTerm.toLowerCase())
+            payment.paymentCode?.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            (selectedBank ? payment.bankName === selectedBank : true)
     );
 
     return (
@@ -157,6 +136,15 @@ const PaymentList = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     style={{ width: '300px' }}
                 />
+                <Select
+                    placeholder="Chọn ngân hàng"
+                    onChange={(value) => setSelectedBank(value)}
+                    style={{ width: '200px' }}
+                >
+                    <Option value="">Tất cả</Option>
+                    <Option value="MOMO">MOMO</Option>
+                    <Option value="TPBANK">TPBANK</Option>
+                </Select>
             </div>
             <Table
                 columns={columns}
@@ -195,7 +183,7 @@ const PaymentList = () => {
                         </div>
                     )}
                 </div>
-            </Modal>l
+            </Modal>
         </div>
     );
 };

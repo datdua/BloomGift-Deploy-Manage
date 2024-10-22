@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllStores, acceptStore, rejectStore } from '../../../redux/actions/storeActions';
-import { Button, Input, Table, Modal, Empty, Tabs } from 'antd';
-import { PlusOutlined, SearchOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { Button, Input, Table, Modal, Empty, Select } from 'antd';
+import { SearchOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 
-const { TabPane } = Tabs;
+const { Option } = Select;
 
 const StoreList = () => {
     const dispatch = useDispatch();
     const [searchTerm, setSearchTerm] = useState('');
-    const [isModalVisible, setIsModalVisible] = useState(false);
     const stores = useSelector(state => state.storeData.stores) || [];
     const error = useSelector(state => state.storeData.error);
+    const [selectedStoreStatus, setSelectedStoreStatus] = useState('');
 
     useEffect(() => {
         dispatch(fetchAllStores());
@@ -71,14 +71,17 @@ const StoreList = () => {
             key: 'storeName',
         },
         {
-            title: 'Loại cửa hàng',
-            dataIndex: 'type',
-            key: 'type',
+            title: 'Ngày Đăng Ký',
+            dataIndex: 'createAt',
+            key: 'createAt',
+            sorter: (a, b) => new Date(a.createAt) - new Date(b.createAt),
+            render: (createAt) => new Date(createAt).toLocaleDateString(),
         },
         {
             title: 'Số điện thoại',
             dataIndex: 'storePhone',
             key: 'storePhone',
+            render: (storePhone) => `0${storePhone}`,
         },
         {
             title: 'Địa chỉ',
@@ -106,7 +109,7 @@ const StoreList = () => {
                         icon={<CheckOutlined />}
                         onClick={() => handleAcceptClick(record.storeID)}
                     >
-                        Kích hoạt
+                        Chấp nhận
                     </Button>
                     <Button
                         type="danger"
@@ -122,7 +125,8 @@ const StoreList = () => {
     ];
 
     const filteredStores = stores.filter(store =>
-        store.storeName?.toLowerCase().includes(searchTerm.toLowerCase())
+        store.storeName?.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (selectedStoreStatus ? store.storeStatus === selectedStoreStatus : true)
     );
 
     const customLocale = {
@@ -144,6 +148,16 @@ const StoreList = () => {
                     style={{ width: 300 }}
                     suffix={<SearchOutlined style={{ fontSize: '18px', color: '#bfbfbf' }} />}
                 />
+                <Select
+                    placeholder="Chọn trạng thái"
+                    onChange={(value) => setSelectedStoreStatus(value)}
+                    style={{ width: '200px' }}
+                >
+                    <Option value="">Tất cả</Option>
+                    <Option value="Đã kích hoạt">Đã kích hoạt</Option>
+                    <Option value="Chờ duyệt">Chờ duyệt</Option>
+                    <Option value="Đang xử lý">Đang xử lý</Option>
+                </Select>
             </div>
             <Table
                 columns={columns}

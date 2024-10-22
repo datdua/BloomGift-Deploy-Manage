@@ -48,7 +48,7 @@ const SalerSidebar = ({ children }) => {
                             Thống Kê
                         </MenuItem>
                         <MenuItem style={{ paddingLeft: "0px" }} icon={<Gem />} component={<NavLink to="/quanly/shop-management" />}>
-                            Shop Management
+                            Quản lý Cửa Hàng
                         </MenuItem>
                         <MenuItem style={{ paddingLeft: "0px" }} icon={<Heart />} component={<NavLink to="/quanly/all-promotion" />}>
                             Quản Lý Khuyến Mãi
@@ -62,17 +62,6 @@ const SalerSidebar = ({ children }) => {
                         <SubMenu label="Quản Lý Sản Phẩm " style={{ paddingLeft: "0px" }} icon={<BoxSeam />}>
                             <MenuItem style={{ paddingLeft: "15px" }} icon={<Box />} component={<NavLink to="/quanly/all-products" />}>
                                 Tất Cả Sản Phẩm
-                            </MenuItem>
-                            <MenuItem style={{ paddingLeft: "15px" }} icon={<PlusCircle />} component={<NavLink to="/quanly/add-product" />}>
-                                Thêm Sản Phẩm
-                            </MenuItem>
-                        </SubMenu>
-                        <SubMenu label="Quản Lý Cửa Hàng " style={{ paddingLeft: "0px" }} icon={<BoxSeam />}>
-                            <MenuItem style={{ paddingLeft: "15px" }} icon={<Box />} component={<NavLink to="/quanly/shop-profile" />}>
-                                Hồ Sơ Shop
-                            </MenuItem>
-                            <MenuItem style={{ paddingLeft: "15px" }} icon={<PlusCircle />} component={<NavLink to="/quanly/shop-settings" />}>
-                                Thiết Lập Shop
                             </MenuItem>
                         </SubMenu>
                     </Menu>

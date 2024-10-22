@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { getProductsByStoreIDBySeller, getProductsByStoreIDWithStatusFalse, getProductsByStoreIDWithStatusTrue, deleteProduct } from '../../../redux/actions/productActions';
+import { getProductsByStoreIDBySeller, getProductsByStoreIDWithStatusFalse, getProductsByStoreIDWithStatusTrue, getAllProducts, deleteProduct } from '../../../redux/actions/productActions';
 import { Button, Input, Select, Table, Empty, Tabs } from 'antd';
 import { PlusOutlined, SearchOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import UpdateProduct from './UpdateProduct';
@@ -21,7 +21,7 @@ const ProductList = () => {
 
     useEffect(() => {
         const storeID = localStorage.getItem('storeID');
-        dispatch(getProductsByStoreIDBySeller(storeID));
+        dispatch(getAllProducts());
     }, [dispatch]);
 
     const handleTabChange = (key) => {
@@ -167,11 +167,6 @@ const ProductList = () => {
                         <Option key={category} value={category}>{category}</Option>
                     ))}
                 </Select>
-                <NavLink to="/quanly/add-product">
-                    <Button type="primary" style={{ background: '#F56285', borderColor: '#F56285' }} icon={<PlusOutlined />}>
-                        Thêm 1 sản phẩm mới
-                    </Button>
-                </NavLink>
             </div>
             <Input
                 placeholder="Tìm tên sản phẩm, SKU sản phẩm, SKU phân loại, Mã sản phẩm"

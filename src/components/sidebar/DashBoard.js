@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import moment from 'moment';
 import { Row, Col, Card, Statistic, Typography, Space } from 'antd';
 import { ShopOutlined, UserOutlined, DollarOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { fetchCountStoresByStatus, fetchCountAccount } from '../../redux/actions/storeActions';
-import { fetchOrderCountRevenue } from '../../redux/actions/orderActions';
+import { fetchOrderCountRevenue, fetchStoresCount, fetchCustomersCount, fetchtRevenuesCount } from '../../redux/actions/orderActions';
 
 const { Title } = Typography;
+
+const getDateTime = (month, year) => {
+    const startDate = moment(`${year}-${month}-01`).startOf('month').format('YYYY-MM-DDTHH:mm:ss');
+    const endDate = moment(`${year}-${month}-01`).endOf('month').format('YYYY-MM-DDTHH:mm:ss');
+
+    return { startDate, endDate };
+};
 
 const Dashboard = () => {
     const [storeCount, setStoreCount] = useState(null);
     const [accountCount, setAccountCount] = useState(null);
     const [orderCountRevenue, setOrderCountRevenue] = useState(null);
     const [chartData, setChartData] = useState([]);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const getCounts = async () => {
@@ -25,36 +35,87 @@ const Dashboard = () => {
                 const orderCountRevenue = await fetchOrderCountRevenue();
                 setOrderCountRevenue(orderCountRevenue);
 
+                //Const for storesCountData
+                const { startDate: startDateStores6, endDate: endDateStores6 } = getDateTime(6, 2024);
+                const storesCountData6 = await dispatch(fetchStoresCount(startDateStores6, endDateStores6));
+
+                const { startDate: startDateStores7, endDate: endDateStores7 } = getDateTime(7, 2024);
+                const storesCountData7 = await dispatch(fetchStoresCount(startDateStores7, endDateStores7));
+
+                const { startDate: startDateStores8, endDate: endDateStores8 } = getDateTime(8, 2024);
+                const storesCountData8 = await dispatch(fetchStoresCount(startDateStores8, endDateStores8));
+
+                const { startDate: startDateStores9, endDate: endDateStores9 } = getDateTime(9, 2024);
+                const storesCountData9 = await dispatch(fetchStoresCount(startDateStores9, endDateStores9));
+
+                const { startDate: startDateStores10, endDate: endDateStores10 } = getDateTime(10, 2024);
+                const storesCountData10 = await dispatch(fetchStoresCount(startDateStores10, endDateStores10));
+
+                
+                //Const for customersCountData
+                const { startDate: startDateCustomers6, endDate: endDateCustomers6 } = getDateTime(6, 2024);
+                const CustomersCountData6 = await dispatch(fetchCustomersCount(startDateCustomers6, endDateCustomers6));
+
+                const { startDate: startDateCustomers7, endDate: endDateCustomers7 } = getDateTime(7, 2024);
+                const CustomersCountData7 = await dispatch(fetchCustomersCount(startDateCustomers7, endDateCustomers7));
+
+                const { startDate: startDateCustomers8, endDate: endDateCustomers8 } = getDateTime(8, 2024);
+                const CustomersCountData8 = await dispatch(fetchCustomersCount(startDateCustomers8, endDateCustomers8));
+
+                const { startDate: startDateCustomers9, endDate: endDateCustomers9 } = getDateTime(9, 2024);
+                const CustomersCountData9 = await dispatch(fetchCustomersCount(startDateCustomers9, endDateCustomers9));
+
+                const { startDate: startDateCustomers10, endDate: endDateCustomers10 } = getDateTime(10, 2024);
+                const CustomersCountData10 = await dispatch(fetchCustomersCount(startDateCustomers10, endDateCustomers10));
+
+
+                //Const for revenuesCountData
+                const { startDate: startDateRevenues6, endDate: endDateRevenues6 } = getDateTime(6, 2024);
+                const RevenuesCountData6 = await dispatch(fetchtRevenuesCount(startDateRevenues6, endDateRevenues6));
+
+                const { startDate: startDateRevenues7, endDate: endDateRevenues7 } = getDateTime(7, 2024);
+                const RevenuesCountData7 = await dispatch(fetchtRevenuesCount(startDateRevenues7, endDateRevenues7));
+
+                const { startDate: startDateRevenues8, endDate: endDateRevenues8 } = getDateTime(8, 2024);
+                const RevenuesCountData8 = await dispatch(fetchtRevenuesCount(startDateRevenues8, endDateRevenues8));
+
+                const { startDate: startDateRevenues9, endDate: endDateRevenues9 } = getDateTime(9, 2024);
+                const RevenuesCountData9 = await dispatch(fetchtRevenuesCount(startDateRevenues9, endDateRevenues9));
+
+                const { startDate: startDateRevenues10, endDate: endDateRevenues10 } = getDateTime(10, 2024);
+                const RevenuesCountData10 = await dispatch(fetchtRevenuesCount(startDateRevenues10, endDateRevenues10));
+
+
                 setChartData([
                     {
                         month: 'Tháng 6',
-                        stores: storeCount * 0.8,
-                        accounts: accountCount * 0.8,
-                        revenue: orderCountRevenue * 0.8
+                        stores: storesCountData6,
+                        accounts: CustomersCountData6,
+                        revenue: RevenuesCountData6,
                     },
                     {
                         month: 'Tháng 7',
-                        stores: storeCount * 0.85,
-                        accounts: accountCount * 0.85,
-                        revenue: orderCountRevenue * 0.85
+                        stores: storesCountData7,
+                        accounts: CustomersCountData7,
+                        revenue: RevenuesCountData7
                     },
                     {
                         month: 'Tháng 8',
-                        stores: storeCount * 0.9,
-                        accounts: accountCount * 0.9,
-                        revenue: orderCountRevenue * 0.9
+                        stores: storesCountData8,
+                        accounts: CustomersCountData8,
+                        revenue: RevenuesCountData8
                     },
                     {
                         month: 'Tháng 9',
-                        stores: storeCount * 0.95,
-                        accounts: accountCount * 0.95,
-                        revenue: orderCountRevenue * 0.95
+                        stores: storesCountData9,
+                        accounts: CustomersCountData9,
+                        revenue: RevenuesCountData9
                     },
                     {
                         month: 'Tháng 10',
-                        stores: storeCount,
-                        accounts: accountCount,
-                        revenue: orderCountRevenue
+                        stores: storesCountData10,
+                        accounts: CustomersCountData10,
+                        revenue: RevenuesCountData10
                     }
                 ]);
             } catch (error) {

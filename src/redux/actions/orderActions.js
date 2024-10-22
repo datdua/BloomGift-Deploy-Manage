@@ -5,7 +5,6 @@ export const GET_ORDER_BY_ID = 'GET_ORDER_BY_ID';
 export const GET_ORDER_BY_STATUS = 'GET_ORDER_BY_STATUS';
 export const GET_ORDER_COUNT_REVENUE = 'GET_ORDER_COUNT_REVENUE';
 
-
 export const fetchAllOrders = () => {
     return async (dispatch) => {
         try {
@@ -108,5 +107,128 @@ export const fetchOrderCountRevenue = async () => {
     } catch (error) {
         console.error("Fetch account count failed:", error);
         return Promise.reject(error);
+    }
+};
+
+export const fetchStoresCount = (startDate, endDate) => {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error("No token found");
+            }
+
+            const params = new URLSearchParams({
+                startDate: startDate,
+                endDate: endDate
+            }).toString();
+
+            const response = await axios.get(
+                `https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/store-management/stores-count/range?${params}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (response.status !== 200) {
+                throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
+            }
+
+            const storesCount = response.data;
+
+            dispatch({
+                type: 'GET_STORES_COUNT',
+                payload: storesCount
+            });
+            
+            return storesCount;
+        } catch (error) {
+            console.error("Fetch stores count failed:", error);
+            return Promise.reject(error);
+        }
+    }
+};
+
+export const fetchCustomersCount = (startDate, endDate) => {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error("No token found");
+            }
+
+            const params = new URLSearchParams({
+                startDate: startDate,
+                endDate: endDate
+            }).toString();
+
+            const response = await axios.get(
+                `https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/accounts-management/accounts-count/range?${params}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (response.status !== 200) {
+                throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
+            }
+
+            const storesCount = response.data;
+
+            dispatch({
+                type: 'GET_STORES_COUNT',
+                payload: storesCount
+            });
+            
+            return storesCount;
+        } catch (error) {
+            console.error("Fetch stores count failed:", error);
+            return Promise.reject(error);
+        }
+    }
+};
+
+export const fetchtRevenuesCount = (startDate, endDate) => {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error("No token found");
+            }
+
+            const params = new URLSearchParams({
+                startDate: startDate,
+                endDate: endDate
+            }).toString();
+
+            const response = await axios.get(
+                `https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/payment/payments-count/range?${params}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (response.status !== 200) {
+                throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
+            }
+
+            const storesCount = response.data;
+
+            dispatch({
+                type: 'GET_REVENUES_COUNT',
+                payload: storesCount
+            });
+            
+            return storesCount;
+        } catch (error) {
+            console.error("Fetch revenue count failed:", error);
+            return Promise.reject(error);
+        }
     }
 };

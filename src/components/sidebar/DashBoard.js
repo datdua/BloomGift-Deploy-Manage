@@ -129,7 +129,6 @@ const Dashboard = () => {
                                     <ArrowUpOutlined /> 25%
                                 </span>
                             }
-                            precision={2}
                         />
                     </Card>
                 </Col>

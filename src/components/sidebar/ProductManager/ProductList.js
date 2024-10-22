@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { getProductsByStoreIDBySeller, getProductsByStoreIDWithStatusFalse, getProductsByStoreIDWithStatusTrue, getAllProducts, deleteProduct } from '../../../redux/actions/productActions';
+import { getProductsByStoreIDBySeller, getProductsByStoreIDWithStatusFalse, getProductsByStoreIDWithStatusTrue, getAllProducts, deleteProduct, getProductByStatusFalse, getProductByStatusTrue } from '../../../redux/actions/productActions';
 import { Button, Input, Select, Table, Empty, Tabs } from 'antd';
 import { PlusOutlined, SearchOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import UpdateProduct from './UpdateProduct';
@@ -27,13 +27,13 @@ const ProductList = () => {
     const handleTabChange = (key) => {
         switch (key) {
             case 'all':
-                dispatch(getProductsByStoreIDBySeller(localStorage.getItem('storeID')));
+                dispatch(getAllProducts());
                 break;
             case 'active':
-                dispatch(getProductsByStoreIDWithStatusTrue(localStorage.getItem('storeID')));
+                dispatch(getProductByStatusTrue());
                 break;
             case 'violated':
-                dispatch(getProductsByStoreIDWithStatusFalse(localStorage.getItem('storeID')));
+                dispatch(getProductByStatusFalse());
                 break;
             default:
                 break;

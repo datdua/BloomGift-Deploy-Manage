@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Statistic, Typography, Space } from 'antd';
-import { ShopOutlined, UserOutlined, DollarOutlined, ArrowUpOutlined  } from '@ant-design/icons';
+import { ShopOutlined, UserOutlined, DollarOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { fetchCountStoresByStatus, fetchCountAccount } from '../../redux/actions/storeActions';
 import { fetchOrderCountRevenue } from '../../redux/actions/orderActions';
@@ -89,7 +89,7 @@ const Dashboard = () => {
     return (
         <Space direction="vertical" size="large" style={{ width: '100%', overflowX: "hidden", padding: "0 10px" }}>
             <Title level={2} style={{ color: '#333' }}>Dashboard</Title>
-<Row gutter={[16, 16]}>
+            <Row gutter={[16, 16]}>
                 <Col xs={24} sm={8}>
                     <Card style={cardStyle}>
                         <Statistic

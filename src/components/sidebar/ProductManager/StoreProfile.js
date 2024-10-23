@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToasts } from "react-toast-notifications";
 import Swal from 'sweetalert2';
-import { fetchSellerInfo, updateSellerInfo } from '../../../redux/actions/storeActions';
+import { fetchSellerInfo, updateSellerInfo, fetchStoreByStoreID } from '../../../redux/actions/storeActions';
 import './StoreProfile.css';
 
 const StoreProfile = () => {

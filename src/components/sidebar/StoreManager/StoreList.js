@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllStores, acceptStore, rejectStore } from '../../../redux/actions/storeActions';
-import { Button, Input, Table, Modal, Empty, Select, Row, Col } from 'antd';
+import { fetchAllStores, acceptStore, rejectStore, fetchStoreByStoreID } from '../../../redux/actions/storeActions';
+import { Button, Input, Table, Modal, Empty, Select, Row, Col, Descriptions, Avatar } from 'antd';
 import { SearchOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 
@@ -13,6 +13,8 @@ const StoreList = () => {
     const stores = useSelector(state => state.storeData.stores) || [];
     const error = useSelector(state => state.storeData.error);
     const [selectedStoreStatus, setSelectedStoreStatus] = useState('');
+    const [storeDetails, setStoreDetails] = useState(null);
+    const [detailsModalVisible, setDetailsModalVisible] = useState(false);
 
     useEffect(() => {
         dispatch(fetchAllStores());
@@ -64,6 +66,16 @@ const StoreList = () => {
         });
     };
 
+    const handleStoreIDClick = async (storeID) => {
+        try {
+            const storeData = await dispatch(fetchStoreByStoreID(storeID));
+            setStoreDetails(storeData);
+            setDetailsModalVisible(true);
+        } catch (error) {
+            Swal.fire('Lỗi!', 'Có lỗi xảy ra khi lấy thông tin cửa hàng.', 'error');
+        }
+    };
+
     const columns = [
         {
             title: 'Mã cửa hàng',
@@ -71,6 +83,11 @@ const StoreList = () => {
             key: 'storeID',
             sorter: (a, b) => a.storeID - b.storeID,
             align: 'center',
+            render: (storeID) => (
+                <Button type="link" onClick={() => handleStoreIDClick(storeID)}>
+                    {storeID}
+                </Button>
+            ),
         },
         {
             title: 'Tên cửa hàng',
@@ -188,6 +205,36 @@ const StoreList = () => {
                 locale={customLocale}
                 pagination={{ pageSize: 10 }}
             />
+            <Modal
+                title="Thông tin chi tiết cửa hàng"
+                visible={detailsModalVisible}
+                onCancel={() => setDetailsModalVisible(false)}
+                footer={null}
+            >
+                {storeDetails && (
+                    <Descriptions bordered column={1} size="small">
+                        <Descriptions.Item label="Mã cửa hàng">{storeDetails.storeID}</Descriptions.Item>
+                        <Descriptions.Item label="Tên cửa hàng">{storeDetails.storeName}</Descriptions.Item>
+                        <Descriptions.Item label="Loại">{storeDetails.type}</Descriptions.Item>
+                        <Descriptions.Item label="Số điện thoại">{storeDetails.storePhone}</Descriptions.Item>
+                        <Descriptions.Item label="Địa chỉ">{storeDetails.storeAddress}</Descriptions.Item>
+                        <Descriptions.Item label="Email">{storeDetails.email}</Descriptions.Item>
+                        <Descriptions.Item label="Tên tài khoản ngân hàng">{storeDetails.bankAccountName}</Descriptions.Item>
+                        <Descriptions.Item label="Số tài khoản ngân hàng">{storeDetails.bankNumber}</Descriptions.Item>
+                        <Descriptions.Item label="Địa chỉ ngân hàng">{storeDetails.bankAddress}</Descriptions.Item>
+                        <Descriptions.Item label="Mã số thuế">{storeDetails.taxNumber}</Descriptions.Item>
+                        <Descriptions.Item label="Trạng thái">{storeDetails.storeStatus}</Descriptions.Item>
+                        <Descriptions.Item label="Avatar">
+                            <Avatar src={storeDetails.storeAvatar} size={100} />
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Số CMND">{storeDetails.identityCard}</Descriptions.Item>
+                        <Descriptions.Item label="Tên CMND">{storeDetails.identityName}</Descriptions.Item>
+                        <Descriptions.Item label="Vai trò">{storeDetails.roleName}</Descriptions.Item>
+                        <Descriptions.Item label="Mô tả cửa hàng">{storeDetails.storeDescription || 'Không có mô tả'}</Descriptions.Item>
+                        <Descriptions.Item label="Ngày tạo">{storeDetails.createAt}</Descriptions.Item>
+                    </Descriptions>
+                )}
+            </Modal>
         </div>
     );
 };

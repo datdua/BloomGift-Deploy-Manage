@@ -320,3 +320,24 @@ export const rejectStore = (storeID) => {
     };
 };
 
+export const fetchStoreByStoreID = (storeID) => {
+    return async (dispatch) => {
+        try {
+            const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/store-management/get-by-id?storeID=${storeID}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            if (response.status !== 200) {
+                throw new Error(`Error fetching store: ${response.status}`);
+            }
+
+            return response.data;
+        } catch (error) {
+            console.error("Fetch store by ID failed:", error);
+            return Promise.reject(error);
+        }
+    };
+}
+

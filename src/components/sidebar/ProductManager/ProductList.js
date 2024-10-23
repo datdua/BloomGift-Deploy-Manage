@@ -53,7 +53,7 @@ const ProductList = () => {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Có, xóa nó!',
+            confirmButtonText: 'Có, Hãy Xóa!',
             cancelButtonText: 'Hủy'
         }).then((result) => {
             if (result.isConfirmed) {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllStores, acceptStore, rejectStore } from '../../../redux/actions/storeActions';
-import { Button, Input, Table, Modal, Empty, Select } from 'antd';
+import { Button, Input, Table, Modal, Empty, Select, Row, Col } from 'antd';
 import { SearchOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 
@@ -66,9 +66,18 @@ const StoreList = () => {
 
     const columns = [
         {
+            title: 'Mã cửa hàng',
+            dataIndex: 'storeID',
+            key: 'storeID',
+            sorter: (a, b) => a.storeID - b.storeID,
+            align: 'center',
+        },
+        {
             title: 'Tên cửa hàng',
             dataIndex: 'storeName',
             key: 'storeName',
+            sorter: (a, b) => a.storeName.localeCompare(b.storeName),
+            align: 'center',
         },
         {
             title: 'Ngày Đăng Ký',
@@ -76,33 +85,38 @@ const StoreList = () => {
             key: 'createAt',
             sorter: (a, b) => new Date(a.createAt) - new Date(b.createAt),
             render: (createAt) => new Date(createAt).toLocaleDateString(),
+            align: 'center',
         },
         {
             title: 'Số điện thoại',
             dataIndex: 'storePhone',
             key: 'storePhone',
-            render: (storePhone) => `0${storePhone}`,
+            render: (storePhone) => `${storePhone}`,
+            align: 'center',
         },
         {
             title: 'Địa chỉ',
             dataIndex: 'storeAddress',
             key: 'storeAddress',
+            align: 'left', // Align left for the address column
         },
         {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
+            align: 'center',
         },
         {
             title: 'Trạng thái',
             dataIndex: 'storeStatus',
             key: 'storeStatus',
+            align: 'center',
         },
         {
             title: 'Hành động',
             key: 'action',
             render: (text, record) => (
-                <div style={{ display: 'flex', gap: '10px' }}>
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
                     <Button
                         type="primary"
                         style={{ background: '#F56285' }}
@@ -121,6 +135,7 @@ const StoreList = () => {
                     </Button>
                 </div>
             ),
+            align: 'center',
         },
     ];
 
@@ -130,6 +145,9 @@ const StoreList = () => {
     );
 
     const customLocale = {
+        triggerDesc: 'Nhấn để sắp xếp giảm dần',
+        triggerAsc: 'Nhấn để sắp xếp tăng dần',
+        cancelSort: 'Nhấn để hủy sắp xếp',
         emptyText: (
             <Empty
                 image={Empty.PRESENTED_IMAGE_DEFAULT}
@@ -141,24 +159,28 @@ const StoreList = () => {
     return (
         <div style={{ padding: '20px' }}>
             <h1>Danh sách cửa hàng</h1>
-            <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between' }}>
-                <Input
-                    placeholder="Tìm kiếm cửa hàng..."
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{ width: 300 }}
-                    suffix={<SearchOutlined style={{ fontSize: '18px', color: '#bfbfbf' }} />}
-                />
-                <Select
-                    placeholder="Chọn trạng thái"
-                    onChange={(value) => setSelectedStoreStatus(value)}
-                    style={{ width: '200px' }}
-                >
-                    <Option value="">Tất cả</Option>
-                    <Option value="Đã kích hoạt">Đã kích hoạt</Option>
-                    <Option value="Chờ duyệt">Chờ duyệt</Option>
-                    <Option value="Đang xử lý">Đang xử lý</Option>
-                </Select>
-            </div>
+            <Row gutter={[16, 16]} style={{ marginBottom: '20px' }}>
+                <Col xs={24} sm={12} md={8}>
+                    <Input
+                        placeholder="Tìm kiếm cửa hàng..."
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{ width: '100%', borderColor: '#F56285' }}
+                        suffix={<SearchOutlined style={{ fontSize: '18px', color: '#bfbfbf' }} />}
+                    />
+                </Col>
+                <Col xs={24} sm={12} md={8}>
+                    <Select
+                        placeholder="Chọn trạng thái"
+                        onChange={(value) => setSelectedStoreStatus(value)}
+                        style={{ width: '100%' }}
+                    >
+                        <Option value="">Tất cả</Option>
+                        <Option value="Đã kích hoạt">Đã kích hoạt</Option>
+                        <Option value="Chờ duyệt">Chờ duyệt</Option>
+                        <Option value="Đang xử lý">Đang xử lý</Option>
+                    </Select>
+                </Col>
+            </Row>
             <Table
                 columns={columns}
                 dataSource={filteredStores}

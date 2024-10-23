@@ -18,6 +18,7 @@ import PromotionList from "./components/sidebar/PromotionManager/PromotionList";
 import StoreList from "./components/sidebar/StoreManager/StoreList";
 import AddProduct from "./components/sidebar/ProductManager/AddProduct";
 import PaymentList from "./components/sidebar/PaymentManager/PaymentList";
+import AccountList from "./components/sidebar/AccountList";
 import LoginPage from "./pages/other/Login";
 import UpdateProduct from "./components/sidebar/ProductManager/UpdateProduct";
 
@@ -179,6 +180,7 @@ const App = (props) => {
                     <Switch>
                       <Route path="/quanly/dashboard" component={Dashboard} />
                       <Route path="/quanly/shop-management" component={StoreList} />
+                      <Route path="/quanly/tai-khoan" component={AccountList} />
                       <Route path="/quanly/shop-profile" component={StoreProfile} />
                       <Route path="/quanly/all-products" component={ProductList} />
                       <Route path="/quanly/add-product" component={AddProduct} />

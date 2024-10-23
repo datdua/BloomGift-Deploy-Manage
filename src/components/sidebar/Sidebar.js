@@ -50,6 +50,9 @@ const SalerSidebar = ({ children }) => {
                         <MenuItem style={{ paddingLeft: "0px" }} icon={<Gem />} component={<NavLink to="/quanly/shop-management" />}>
                             Quản lý Cửa Hàng
                         </MenuItem>
+                        <MenuItem style={{ paddingLeft: "0px" }} icon={<Gem />} component={<NavLink to="/quanly/tai-khoan" />}>
+                            Quản lý Tài Khoản
+                        </MenuItem>
                         <MenuItem style={{ paddingLeft: "0px" }} icon={<Heart />} component={<NavLink to="/quanly/all-promotion" />}>
                             Quản Lý Khuyến Mãi
                         </MenuItem>

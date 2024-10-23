@@ -91,7 +91,7 @@ export const fetchOrderByStatus = (orderStatus) => {
 
 export const fetchOrderCountRevenue = async () => {
     try {
-        const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/revenue/revenue-management/total-revenue`,
+        const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/payment/revenue-count`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,

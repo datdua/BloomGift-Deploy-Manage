@@ -43,10 +43,10 @@ const PromotionList = () => {
                 dispatch(getAllPromotions());
                 break;
             case 'active':
-                dispatch(getPromotionByStatus('Có hiệu lực'));
+                dispatch(getPromotionByStatus('1'));
                 break;
             case 'violated':
-                dispatch(getPromotionByStatus('Hết hiệu lực'));
+                dispatch(getPromotionByStatus('0'));
                 break;
             default:
                 break;
@@ -74,7 +74,7 @@ const PromotionList = () => {
                     .then(() => {
                         Swal.fire(
                             'Đã xóa!',
-                            'Sản phẩm đã được xóa thành công.',
+                            'Voucher đã được xóa thành công.',
                             'success'
                         );
                         dispatch(getAllPromotions());
@@ -175,7 +175,7 @@ const PromotionList = () => {
 
     return (
         <div style={{ padding: '20px' }}>
-            <h1>Sản phẩm</h1>
+            <h1>Voucher</h1>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
                 <Select defaultValue="" style={{ width: 200, borderColor: '#F56285' }} onChange={value => setSelectedCategory(value)}>
                     <Option value="">Tất cả danh mục</Option>

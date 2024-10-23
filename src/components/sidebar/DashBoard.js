@@ -51,7 +51,7 @@ const Dashboard = () => {
                 const { startDate: startDateStores10, endDate: endDateStores10 } = getDateTime(10, 2024);
                 const storesCountData10 = await dispatch(fetchStoresCount(startDateStores10, endDateStores10));
 
-                
+
                 //Const for customersCountData
                 const { startDate: startDateCustomers6, endDate: endDateCustomers6 } = getDateTime(6, 2024);
                 const CustomersCountData6 = await dispatch(fetchCustomersCount(startDateCustomers6, endDateCustomers6));

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Button, Input, Modal, Select, Empty, Row, Col } from 'antd';
+import { Table, Button, Input, Modal, Select, Empty, Row, Col, Image } from 'antd';
 import { acceptPayment, fetchAllPayment, rejectPayment } from '../../../redux/actions/paymentAction';
 import { CheckOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
@@ -15,7 +15,7 @@ const PaymentList = () => {
     const [selectedPaymentId, setSelectedPaymentId] = useState(null);
     const [rejectNote, setRejectNote] = useState('');
     const [noteError, setNoteError] = useState('');
-    const [selectedBank, setSelectedBank] = useState(''); // State to store selected bank
+    const [selectedBank, setSelectedBank] = useState('');
 
     useEffect(() => {
         dispatch(fetchAllPayment());
@@ -107,7 +107,7 @@ const PaymentList = () => {
             dataIndex: 'totalPrice',
             key: 'totalPrice',
             sorter: (a, b) => a.totalPrice - b.totalPrice,
-            render: (price) => `${price.toLocaleString()} VNĐ`,
+            render: (price) => `${price?.toLocaleString()} VNĐ`,
             align: 'center',
         },
         {
@@ -118,10 +118,24 @@ const PaymentList = () => {
             align: 'center',
         },
         {
-            title: 'Mã giao dịch',
-            dataIndex: 'paymentCode',
-            key: 'paymentCode',
-            render: (code) => code ? code : 'Chưa có mã giao dịch',
+            title: "Ảnh thanh toán",
+            dataIndex: "paymentImage",
+            key: "paymentImage",
+            render: (image) => (
+                image ? (
+                    <Image
+                        src={image}
+                        alt="Payment proof"
+                        style={{ width: 50, height: 50, objectFit: "cover" }}
+                        preview={{
+                            maskClassName: "customize-mask",
+                            mask: <div className="text-white">Xem</div>,
+                        }}
+                    />
+                ) : (
+                    "Chưa có ảnh"
+                )
+            ),
             align: 'center',
         },
         {
@@ -129,10 +143,22 @@ const PaymentList = () => {
             key: 'action',
             render: (_, record) => (
                 <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                    <Button type="primary" style={{ background: '#52c41a' }} onClick={() => handleAcceptClick(record.paymentID)} icon={<CheckOutlined />}>
+                    <Button
+                        type="primary"
+                        style={{ background: '#52c41a' }}
+                        onClick={() => handleAcceptClick(record.paymentID)}
+                        icon={<CheckOutlined />}
+                        disabled={record.paymentStatus}
+                    >
                         Chấp nhận
                     </Button>
-                    <Button type="danger" style={{ background: '#f5222d', color: 'white' }} onClick={() => handleRejectClick(record.paymentID)} icon={<CloseOutlined />}>
+                    <Button
+                        type="danger"
+                        style={{ background: '#f5222d', color: 'white' }}
+                        onClick={() => handleRejectClick(record.paymentID)}
+                        icon={<CloseOutlined />}
+                        disabled={record.paymentStatus}
+                    >
                         Từ chối
                     </Button>
                 </div>
@@ -141,11 +167,13 @@ const PaymentList = () => {
         },
     ];
 
-    const filteredPayments = payments.filter(
-        (payment) =>
-            payment.paymentCode?.toLowerCase().includes(searchTerm.toLowerCase()) &&
-            (selectedBank ? payment.bankName === selectedBank : true)
-    );
+    const filteredPayments = payments.filter(payment => {
+        const matchesSearch = !searchTerm ||
+            payment.paymentID?.toString().includes(searchTerm.toLowerCase()) ||
+            payment.orderID?.toString().includes(searchTerm.toLowerCase());
+        const matchesBank = !selectedBank || payment.bankName === selectedBank;
+        return matchesSearch && matchesBank;
+    });
 
     return (
         <div style={{ padding: '20px' }}>
@@ -153,7 +181,7 @@ const PaymentList = () => {
             <Row gutter={[16, 16]} style={{ marginBottom: '20px' }}>
                 <Col xs={24} sm={12} md={8}>
                     <Input
-                        placeholder="Tìm kiếm theo mã giao dịch"
+                        placeholder="Tìm kiếm theo mã thanh toán hoặc mã đơn hàng"
                         prefix={<SearchOutlined />}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         style={{ width: '100%', borderColor: '#F56285' }}
@@ -164,6 +192,7 @@ const PaymentList = () => {
                         placeholder="Chọn ngân hàng"
                         onChange={(value) => setSelectedBank(value)}
                         style={{ width: '100%' }}
+                        allowClear
                     >
                         <Option value="">Tất cả</Option>
                         <Option value="MOMO">MOMO</Option>
@@ -171,6 +200,7 @@ const PaymentList = () => {
                     </Select>
                 </Col>
             </Row>
+
             <Table
                 columns={columns}
                 dataSource={filteredPayments}
@@ -181,8 +211,12 @@ const PaymentList = () => {
                     cancelSort: 'Nhấn để hủy sắp xếp',
                     emptyText: <Empty description="Không có thanh toán nào" />,
                 }}
-                pagination={{ pageSize: 10 }}
+                pagination={{
+                    pageSize: 10,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} của ${total} thanh toán`
+                }}
             />
+
             <Modal
                 title="Từ chối thanh toán"
                 visible={rejectModalVisible}
@@ -213,6 +247,12 @@ const PaymentList = () => {
                     )}
                 </div>
             </Modal>
+
+            <style jsx>{`
+                .ant-select-item-option-content {
+                    color: black !important;
+                }
+            `}</style>
         </div>
     );
 };

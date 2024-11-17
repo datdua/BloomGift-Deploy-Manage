@@ -145,7 +145,7 @@ const PaymentList = () => {
                 <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
                     <Button
                         type="primary"
-                        style={{ background: '#52c41a' }}
+                        style={{ background: '#52c41a', color: 'white' }}
                         onClick={() => handleAcceptClick(record.paymentID)}
                         icon={<CheckOutlined />}
                         disabled={record.paymentStatus}

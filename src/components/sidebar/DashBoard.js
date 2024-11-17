@@ -36,12 +36,6 @@ const Dashboard = () => {
                 setOrderCountRevenue(orderCountRevenue);
 
                 //Const for storesCountData
-                const { startDate: startDateStores6, endDate: endDateStores6 } = getDateTime(6, 2024);
-                const storesCountData6 = await dispatch(fetchStoresCount(startDateStores6, endDateStores6));
-
-                const { startDate: startDateStores7, endDate: endDateStores7 } = getDateTime(7, 2024);
-                const storesCountData7 = await dispatch(fetchStoresCount(startDateStores7, endDateStores7));
-
                 const { startDate: startDateStores8, endDate: endDateStores8 } = getDateTime(8, 2024);
                 const storesCountData8 = await dispatch(fetchStoresCount(startDateStores8, endDateStores8));
 
@@ -51,14 +45,13 @@ const Dashboard = () => {
                 const { startDate: startDateStores10, endDate: endDateStores10 } = getDateTime(10, 2024);
                 const storesCountData10 = await dispatch(fetchStoresCount(startDateStores10, endDateStores10));
 
+                const { startDate: startDateStores11, endDate: endDateStores11 } = getDateTime(11, 2024);
+                const storesCountData11 = await dispatch(fetchStoresCount(startDateStores11, endDateStores11));
+
+                const { startDate: startDateStores12, endDate: endDateStores12 } = getDateTime(12, 2024);
+                const storesCountData12 = await dispatch(fetchStoresCount(startDateStores12, endDateStores12));
 
                 //Const for customersCountData
-                const { startDate: startDateCustomers6, endDate: endDateCustomers6 } = getDateTime(6, 2024);
-                const CustomersCountData6 = await dispatch(fetchCustomersCount(startDateCustomers6, endDateCustomers6));
-
-                const { startDate: startDateCustomers7, endDate: endDateCustomers7 } = getDateTime(7, 2024);
-                const CustomersCountData7 = await dispatch(fetchCustomersCount(startDateCustomers7, endDateCustomers7));
-
                 const { startDate: startDateCustomers8, endDate: endDateCustomers8 } = getDateTime(8, 2024);
                 const CustomersCountData8 = await dispatch(fetchCustomersCount(startDateCustomers8, endDateCustomers8));
 
@@ -68,14 +61,13 @@ const Dashboard = () => {
                 const { startDate: startDateCustomers10, endDate: endDateCustomers10 } = getDateTime(10, 2024);
                 const CustomersCountData10 = await dispatch(fetchCustomersCount(startDateCustomers10, endDateCustomers10));
 
+                const { startDate: startDateCustomers11, endDate: endDateCustomers11 } = getDateTime(11, 2024);
+                const CustomersCountData11 = await dispatch(fetchCustomersCount(startDateCustomers11, endDateCustomers11));
+
+                const { startDate: startDateCustomers12, endDate: endDateCustomers12 } = getDateTime(12, 2024);
+                const CustomersCountData12 = await dispatch(fetchCustomersCount(startDateCustomers12, endDateCustomers12));
 
                 //Const for revenuesCountData
-                const { startDate: startDateRevenues6, endDate: endDateRevenues6 } = getDateTime(6, 2024);
-                const RevenuesCountData6 = await dispatch(fetchtRevenuesCount(startDateRevenues6, endDateRevenues6));
-
-                const { startDate: startDateRevenues7, endDate: endDateRevenues7 } = getDateTime(7, 2024);
-                const RevenuesCountData7 = await dispatch(fetchtRevenuesCount(startDateRevenues7, endDateRevenues7));
-
                 const { startDate: startDateRevenues8, endDate: endDateRevenues8 } = getDateTime(8, 2024);
                 const RevenuesCountData8 = await dispatch(fetchtRevenuesCount(startDateRevenues8, endDateRevenues8));
 
@@ -85,20 +77,13 @@ const Dashboard = () => {
                 const { startDate: startDateRevenues10, endDate: endDateRevenues10 } = getDateTime(10, 2024);
                 const RevenuesCountData10 = await dispatch(fetchtRevenuesCount(startDateRevenues10, endDateRevenues10));
 
+                const { startDate: startDateRevenues11, endDate: endDateRevenues11 } = getDateTime(11, 2024);
+                const RevenuesCountData11 = await dispatch(fetchtRevenuesCount(startDateRevenues11, endDateRevenues11));
+
+                const { startDate: startDateRevenues12, endDate: endDateRevenues12 } = getDateTime(12, 2024);
+                const RevenuesCountData12 = await dispatch(fetchtRevenuesCount(startDateRevenues12, endDateRevenues12));
 
                 setChartData([
-                    {
-                        month: 'Tháng 6',
-                        stores: storesCountData6,
-                        accounts: CustomersCountData6,
-                        revenue: RevenuesCountData6,
-                    },
-                    {
-                        month: 'Tháng 7',
-                        stores: storesCountData7,
-                        accounts: CustomersCountData7,
-                        revenue: RevenuesCountData7
-                    },
                     {
                         month: 'Tháng 8',
                         stores: storesCountData8,
@@ -116,6 +101,18 @@ const Dashboard = () => {
                         stores: storesCountData10,
                         accounts: CustomersCountData10,
                         revenue: RevenuesCountData10
+                    },
+                    {
+                        month: 'Tháng 11',
+                        stores: storesCountData11,
+                        accounts: CustomersCountData11,
+                        revenue: RevenuesCountData11
+                    },
+                    {
+                        month: 'Tháng 12',
+                        stores: storesCountData12,
+                        accounts: CustomersCountData12,
+                        revenue: RevenuesCountData12
                     }
                 ]);
             } catch (error) {

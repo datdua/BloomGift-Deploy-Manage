@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Button, Input, Modal, Select, Empty, Row, Col, Image } from 'antd';
+import { Table, Button, Input, Modal, Select, Empty, Row, Col, Image, DatePicker } from 'antd';
 import { acceptPayment, fetchAllPayment, rejectPayment } from '../../../redux/actions/paymentAction';
 import { CheckOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
+import moment from 'moment';
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const PaymentList = () => {
     const dispatch = useDispatch();
@@ -16,6 +18,7 @@ const PaymentList = () => {
     const [rejectNote, setRejectNote] = useState('');
     const [noteError, setNoteError] = useState('');
     const [selectedBank, setSelectedBank] = useState('');
+    const [dateRange, setDateRange] = useState([null, null]);
 
     useEffect(() => {
         dispatch(fetchAllPayment());
@@ -80,6 +83,7 @@ const PaymentList = () => {
             dataIndex: 'paymentDate',
             key: 'paymentDate',
             sorter: (a, b) => new Date(a.paymentDate) - new Date(b.paymentDate),
+            render: (date) => date ? moment(date).format('DD/MM/YYYY HH:mm:ss') : 'N/A',
             align: 'center',
         },
         {
@@ -172,7 +176,9 @@ const PaymentList = () => {
             payment.paymentID?.toString().includes(searchTerm.toLowerCase()) ||
             payment.orderID?.toString().includes(searchTerm.toLowerCase());
         const matchesBank = !selectedBank || payment.bankName === selectedBank;
-        return matchesSearch && matchesBank;
+        const matchesDateRange = !dateRange[0] || !dateRange[1] ||
+            (moment(payment.paymentDate).isSameOrAfter(dateRange[0]) && moment(payment.paymentDate).isSameOrBefore(dateRange[1]));
+        return matchesSearch && matchesBank && matchesDateRange;
     });
 
     return (
@@ -198,6 +204,12 @@ const PaymentList = () => {
                         <Option value="MOMO">MOMO</Option>
                         <Option value="TPBANK">TPBANK</Option>
                     </Select>
+                </Col>
+                <Col xs={24} sm={12} md={8}>
+                    <RangePicker
+                        style={{ width: '100%' }}
+                        onChange={(dates) => setDateRange(dates || [null, null])}
+                    />
                 </Col>
             </Row>
 

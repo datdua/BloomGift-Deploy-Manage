@@ -5,6 +5,7 @@ import { acceptPayment, fetchAllPayment, rejectPayment } from '../../../redux/ac
 import { CheckOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import moment from 'moment';
+import locale from 'antd/es/date-picker/locale/vi_VN';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -209,6 +210,13 @@ const PaymentList = () => {
                     <RangePicker
                         style={{ width: '100%' }}
                         onChange={(dates) => setDateRange(dates || [null, null])}
+                        locale={{
+                            ...locale,
+                            lang: {
+                                ...locale.lang,
+                                rangePlaceholder: ['Ngày bắt đầu', 'Ngày kết thúc'],
+                            },
+                        }}
                     />
                 </Col>
             </Row>

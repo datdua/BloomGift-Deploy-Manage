@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Button, Input, Modal, Select, Empty, Row, Col, Image, DatePicker } from 'antd';
+import { Table, Button, Input, Modal, Select, Empty, Row, Col, Image, DatePicker, Descriptions } from 'antd';
 import { acceptPayment, fetchAllPayment, rejectPayment } from '../../../redux/actions/paymentAction';
+import { fetchOrderByIdByAdmin } from '../../../redux/actions/orderActions';
 import { CheckOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import moment from 'moment';
@@ -20,10 +21,27 @@ const PaymentList = () => {
     const [noteError, setNoteError] = useState('');
     const [selectedBank, setSelectedBank] = useState('');
     const [dateRange, setDateRange] = useState([null, null]);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
         dispatch(fetchAllPayment());
     }, [dispatch]);
+
+    const showOrderDetails = async (orderID) => {
+        try {
+            const order = await dispatch(fetchOrderByIdByAdmin(orderID));
+            setSelectedOrder(order);
+            setIsModalVisible(true);
+        } catch (error) {
+            console.error("Failed to fetch order details:", error);
+        }
+    };
+
+    const handleModalClose = () => {
+        setIsModalVisible(false);
+        setSelectedOrder(null);
+    };
 
     const handleAcceptClick = (paymentID) => {
         Swal.fire({
@@ -100,6 +118,11 @@ const PaymentList = () => {
             key: 'orderID',
             sorter: (a, b) => a.orderID - b.orderID,
             align: 'center',
+            render: (orderID) => (
+                <Button type="link" onClick={() => showOrderDetails(orderID)}>
+                    {orderID}
+                </Button>
+            ),
         },
         {
             title: 'Ngân hàng',
@@ -266,6 +289,45 @@ const PaymentList = () => {
                         </div>
                     )}
                 </div>
+            </Modal>
+            <Modal
+                title={<span style={{ fontSize: '24px', fontWeight: 'bold' }}>Thông tin chi tiết đơn hàng</span>}
+                visible={isModalVisible}
+                onCancel={handleModalClose}
+                style={{ top: 20 }}
+                footer={[
+                    <Button key="close" onClick={handleModalClose}>
+                        Đóng
+                    </Button>,
+                ]}
+            >
+                {selectedOrder ? (
+                    <>
+                        <Descriptions bordered column={1}>
+                            <Descriptions.Item label="Mã đơn hàng">{selectedOrder.orderID}</Descriptions.Item>
+                            <Descriptions.Item label="Giá">{selectedOrder.oderPrice.toLocaleString()} VNĐ</Descriptions.Item>
+                            <Descriptions.Item label="Trạng thái">{selectedOrder.orderStatus}</Descriptions.Item>
+                            <Descriptions.Item label="Ghi chú">{selectedOrder.note || "Không có ghi chú"}</Descriptions.Item>
+                            <Descriptions.Item label="Địa chỉ giao hàng">{selectedOrder.deliveryAddress}</Descriptions.Item>
+                            <Descriptions.Item label="Ngày giao hàng">{new Date(selectedOrder.deliveryDateTime).toLocaleString()}</Descriptions.Item>
+                            <Descriptions.Item label="Tên khách hàng">{selectedOrder.accountName}</Descriptions.Item>
+                            <Descriptions.Item label="Điện thoại">(+84) {selectedOrder.phone}</Descriptions.Item>
+                        </Descriptions>
+                        <h3 style={{ marginTop: "20px", fontSize: '24px', fontWeight: 'bold' }}>Thông tin sản phẩm</h3>
+                        <Descriptions bordered column={1}>
+                            {selectedOrder.orderDetails.map((detail) => (
+                                <React.Fragment key={detail.orderDetailID}>
+                                    <Descriptions.Item label="Tên sản phẩm">{detail.productName}</Descriptions.Item>
+                                    <Descriptions.Item label="Tên cửa hàng">{detail.storeName}</Descriptions.Item>
+                                    <Descriptions.Item label="Số lượng">{detail.quantity}</Descriptions.Item>
+                                    <Descriptions.Item label="Tổng giá">{detail.productTotalPrice.toLocaleString()} VNĐ</Descriptions.Item>
+                                </React.Fragment>
+                            ))}
+                        </Descriptions>
+                    </>
+                ) : (
+                    <p>Đang tải...</p>
+                )}
             </Modal>
 
             <style jsx>{`

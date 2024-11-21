@@ -232,3 +232,31 @@ export const fetchtRevenuesCount = (startDate, endDate) => {
         }
     }
 };
+
+export const fetchOrderByIdByAdmin = (orderID) => {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error("No token found");
+            }
+            const response = await axios.get(`https://bloomgift2-hkdra9cyapase2cy.southeastasia-01.azurewebsites.net/api/admin/order/get-order-by-id/${orderID}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.status !== 200) {
+                throw new Error(`Lỗi khi nhận dữ liệu: ${response.status}`);
+            }
+            const order = response.data;
+            dispatch({
+                type: GET_ORDER_BY_ID,
+                payload: order
+            });
+            return order;
+        } catch (error) {
+            console.error("Fetch order by ID failed:", error);
+            return Promise.reject(error);
+        }
+    }
+}

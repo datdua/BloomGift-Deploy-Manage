@@ -122,6 +122,7 @@ const PromotionList = () => {
             title: 'Trạng thái',
             dataIndex: 'promotionStatus',
             key: 'promotionStatus',
+            render: (text) => <span>{text === '1' ? 'Đang kích hoạt' : 'Chưa kích hoạt'}</span>,
         },
         {
             title: 'Ngày bắt đầu',

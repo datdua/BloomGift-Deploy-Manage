@@ -179,7 +179,7 @@ const Dashboard = () => {
                 <Col xs={24} sm={8}>
                     <Card style={cardStyle}>
                         <Statistic
-                            title="Doanh thu đơn hàng"
+                            title="Lợi nhuận"
                             value={orderCountRevenue}
                             prefix={<DollarOutlined style={iconStyle} />}
                             suffix={
@@ -212,7 +212,7 @@ const Dashboard = () => {
                             <Legend />
                             <Bar yAxisId="left" dataKey="stores" name="Số cửa hàng" fill="#8884d8" />
                             <Bar yAxisId="left" dataKey="accounts" name="Số khách hàng" fill="#82ca9d" />
-                            <Bar yAxisId="right" dataKey="revenue" name="Doanh thu" fill="#ffc658" />
+                            <Bar yAxisId="right" dataKey="revenue" name="Đơn hàng" fill="#ffc658" />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>

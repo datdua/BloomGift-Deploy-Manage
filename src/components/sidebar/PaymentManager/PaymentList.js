@@ -23,6 +23,7 @@ const PaymentList = () => {
     const [dateRange, setDateRange] = useState([null, null]);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState("");
 
     useEffect(() => {
         dispatch(fetchAllPayment());
@@ -195,15 +196,19 @@ const PaymentList = () => {
         },
     ];
 
-    const filteredPayments = payments.filter(payment => {
-        const matchesSearch = !searchTerm ||
-            payment.paymentID?.toString().includes(searchTerm.toLowerCase()) ||
-            payment.orderID?.toString().includes(searchTerm.toLowerCase());
-        const matchesBank = !selectedBank || payment.bankName === selectedBank;
-        const matchesDateRange = !dateRange[0] || !dateRange[1] ||
-            (moment(payment.paymentDate).isSameOrAfter(dateRange[0]) && moment(payment.paymentDate).isSameOrBefore(dateRange[1]));
-        return matchesSearch && matchesBank && matchesDateRange;
-    });
+    const filteredPayments = payments.filter(
+        (payment) => {
+            const paymentDate = new Date(payment.paymentDate);
+            const [start, end] = dateRange;
+            return (
+                (payment.storeName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    payment.bankName?.toLowerCase().includes(searchTerm.toLowerCase())) &&
+                (selectedStatus === "" || payment.paymentStatus === (selectedStatus === "true")) &&
+                (selectedBank === "" || payment.bankName === selectedBank) &&
+                (!start || !end || (paymentDate >= start && paymentDate <= end))
+            );
+        }
+    );
 
     return (
         <div style={{ padding: '20px' }}>

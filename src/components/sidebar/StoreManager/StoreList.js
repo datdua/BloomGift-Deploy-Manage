@@ -136,9 +136,10 @@ const StoreList = () => {
                 <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
                     <Button
                         type="primary"
-                        style={{ background: '#F56285' }}
+                        style={{ background: '#52c41a', color: 'white' }}
                         icon={<CheckOutlined />}
                         onClick={() => handleAcceptClick(record.storeID)}
+                        disabled={record.storeStatus === 'Đã kích hoạt'}
                     >
                         Chấp nhận
                     </Button>

@@ -5,7 +5,7 @@ import { acceptPayment, fetchAllPayment, rejectPayment } from '../../../redux/ac
 import { fetchOrderByIdByAdmin } from '../../../redux/actions/orderActions';
 import { CheckOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import locale from 'antd/es/date-picker/locale/vi_VN';
 
 const { Option } = Select;
@@ -103,7 +103,7 @@ const PaymentList = () => {
             dataIndex: 'paymentDate',
             key: 'paymentDate',
             sorter: (a, b) => new Date(a.paymentDate) - new Date(b.paymentDate),
-            render: (date) => date ? moment(date).format('DD/MM/YYYY HH:mm:ss') : 'N/A',
+            render: (date) => date ? moment(date).tz('Asia/Ho_Chi_Minh').format('DD/MM/YYYY HH:mm:ss') : 'N/A',
             align: 'center',
         },
         {
@@ -314,7 +314,12 @@ const PaymentList = () => {
                             <Descriptions.Item label="Trạng thái">{selectedOrder.orderStatus}</Descriptions.Item>
                             <Descriptions.Item label="Ghi chú">{selectedOrder.note || "Không có ghi chú"}</Descriptions.Item>
                             <Descriptions.Item label="Địa chỉ giao hàng">{selectedOrder.deliveryAddress}</Descriptions.Item>
-                            <Descriptions.Item label="Ngày giao hàng">{new Date(selectedOrder.deliveryDateTime).toLocaleString()}</Descriptions.Item>
+                            <Descriptions.Item label="Ngày giao hàng">
+                                {selectedOrder?.deliveryDateTime
+                                    ? moment.utc(selectedOrder.deliveryDateTime).format('DD/MM/YYYY HH:mm:ss')
+                                    : 'N/A'}
+                            </Descriptions.Item>
+
                             <Descriptions.Item label="Tên khách hàng">{selectedOrder.accountName}</Descriptions.Item>
                             <Descriptions.Item label="Điện thoại">(+84) {selectedOrder.phone}</Descriptions.Item>
                         </Descriptions>
